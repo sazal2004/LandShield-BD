@@ -3,7 +3,7 @@
 
 ## Live Demo & Project Video
 - Live Application: https://landshield-bd.onrender.com
-- Project Demo Video: [Insert your video link here]
+- Project Demo Video: https://youtu.be/VqUBuhQqAe4
 
 ---
 
@@ -123,7 +123,7 @@ Designed to function as an intelligent Risk-Analysis and Decision-Support Layer 
 
 ## লাইভ ডেমো ও প্রজেক্ট ভিডিও
 - লাইভ ওয়েবসাইট: https://landshield-bd.onrender.com
-- প্রজেক্ট পরিচিতি ও ডেমো ভিডিও: [এখানে আপনার ভিডিওর লিংক বসিয়ে দিন]
+- প্রজেক্ট পরিচিতি ও ডেমো ভিডিও: https://youtu.be/VqUBuhQqAe4
 
 ---
 
