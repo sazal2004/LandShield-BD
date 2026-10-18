@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>কর্মকর্তা ড্যাশবোর্ড | ল্যান্ডশিল্ড বিডি</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="navbar">
+  <div class="brand">
+    <img class="corner-logo" th:src="@{/images/gov-logo.png}" alt="" onerror="this.style.display='none'">
+    <div class="logo">LandShield BD — কর্মকর্তা</div>
+  </div>
+  <nav>
+    <a th:href="@{/}">জনসাধারণের সাইট</a>
+    <form th:action="@{/logout}" method="post" class="inline-form">
+      <button class="nav-button" type="submit">লগআউট</button>
+    </form>
+  </nav>
+  <div class="corner-right">
+    <img class="corner-logo" th:src="@{/images/diu-logo.png}" alt="Daffodil International University" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    <span class="corner-text" style="display:none">Daffodil International University</span>
+  </div>
+</header>
+<section class="page-section">
+<div class="dashboard">
+  <h1>যাচাই পর্যালোচনা ড্যাশবোর্ড</h1>
+  <p>চিহ্নিত (ফ্ল্যাগড) যাচাই-কেসগুলোর প্রোটোটাইপ পর্যালোচনা তালিকা।</p>
+
+  <div th:if="${resetMessage}" class="flash-message" th:text="${resetMessage}"></div>
+
+  <form th:action="@{/officer/reset-demo}" method="post">
+    <button class="secondary-button" type="submit">ডেমো লেনদেনগুলো রিসেট করুন</button>
+  </form>
+
+  <div class="table-wrapper">
+  <table>
+    <thead>
+      <tr><th>কেস</th><th>বিক্রেতা</th><th>ক্রেতা</th><th>পরিমাণ</th><th>ঝুঁকি</th><th>স্কোর</th><th>কারণসমূহ</th><th>অবস্থা</th><th>পদক্ষেপ</th></tr>
+    </thead>
+    <tbody>
+      <tr th:if="${#lists.isEmpty(cases)}"><td colspan="9">এখনো কোনো যাচাই-কেস নেই। জনসাধারণের সাইট থেকে একটি যাচাই চালান।</td></tr>
+      <tr th:each="item : ${cases}">
+        <td th:text="${item.caseRef}"></td>
+        <td th:text="${item.sellerName}"></td>
+        <td th:text="${item.buyerName}"></td>
+        <td th:text="${item.proposedArea}"></td>
+        <td><span th:class="'badge ' + ${#strings.toLowerCase(item.riskLevel)}"
+                  th:text="${item.riskLevel == 'HIGH' ? 'উচ্চ' : (item.riskLevel == 'MEDIUM' ? 'মধ্যম' : 'নিম্ন')}"></span></td>
+        <td th:text="${item.riskScore}"></td>
+        <td th:text="${item.reasons}"></td>
+        <td th:text="${item.reviewStatus == 'PENDING_REVIEW' ? 'পর্যালোচনা বাকি' : (item.reviewStatus == 'REVIEWED' ? 'পর্যালোচিত' : 'পর্যালোচনা প্রয়োজন নেই')}"></td>
+        <td>
+          <form th:if="${item.reviewStatus == 'PENDING_REVIEW'}"
+                th:action="@{/officer/cases/{id}/reviewed(id=${item.id})}" method="post">
+            <button class="small-button" type="submit">পর্যালোচিত চিহ্নিত করুন</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+</section>
+</body>
+</html>

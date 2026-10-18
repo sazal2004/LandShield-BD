@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>যাচাইয়ের ফলাফল | ল্যান্ডশিল্ড বিডি</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="navbar">
+  <div class="brand">
+    <img class="corner-logo" th:src="@{/images/gov-logo.png}" alt="" onerror="this.style.display='none'">
+    <div class="logo">LandShield BD</div>
+  </div>
+  <nav>
+    <a th:href="@{/}">হোম</a>
+    <a th:href="@{/verify}">নতুন যাচাই</a>
+  </nav>
+  <div class="corner-right">
+    <img class="corner-logo" th:src="@{/images/diu-logo.png}" alt="Daffodil International University" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    <span class="corner-text" style="display:none">Daffodil International University</span>
+  </div>
+</header>
+<section class="page-section">
+<div class="result-box">
+
+<div th:if="${error}" class="error-card">
+  <h2>যাচাই সম্পন্ন করা যায়নি</h2>
+  <p th:text="${error}"></p>
+  <a th:href="@{/verify}" class="button">আবার চেষ্টা করুন</a>
+</div>
+
+<div th:if="${result != null}">
+  <span class="eyebrow">ল্যান্ডশিল্ড যাচাই প্রতিবেদন</span>
+  <p class="case-ref">কেস নম্বর: <strong th:text="${result.caseRef}"></strong></p>
+
+  <div th:class="'risk-banner ' + ${#strings.toLowerCase(result.riskLevel)}">
+    <h1><span th:text="${result.riskLevel == 'HIGH' ? 'উচ্চ' : (result.riskLevel == 'MEDIUM' ? 'মধ্যম' : 'নিম্ন')}"></span> ঝুঁকি</h1>
+    <p>ঝুঁকির স্কোর: <strong th:text="${result.riskScore}"></strong> / ১০০</p>
+  </div>
+
+  <h2>মালিকানার সারসংক্ষেপ</h2>
+  <div class="grid">
+    <div class="metric"><span>বিক্রেতার বর্তমান ব্যালেন্স</span>
+      <strong th:text="${#numbers.formatDecimal(result.currentSellerBalance,1,2)} + ' ডেসিমাল'"></strong></div>
+    <div class="metric"><span>প্রস্তাবিত হস্তান্তর</span>
+      <strong th:text="${#numbers.formatDecimal(result.proposedArea,1,2)} + ' ডেসিমাল'"></strong></div>
+    <div class="metric"><span>ক্রেতার বর্তমান ব্যালেন্স</span>
+      <strong th:text="${#numbers.formatDecimal(result.currentBuyerBalance,1,2)} + ' ডেসিমাল'"></strong></div>
+    <div class="metric"><span>ভূমি-অংশ রেফারেন্স</span>
+      <strong th:text="${result.shareRef}"></strong></div>
+  </div>
+
+  <h2>যাচাইয়ের ধাপসমূহ</h2>
+  <div class="check ok" th:if="${result.propertyDetailsMatched}">✓ সম্পত্তির তথ্য মিলেছে</div>
+  <div class="check warn" th:unless="${result.propertyDetailsMatched}">⚠ সম্পত্তির অবস্থানের তথ্যে অমিল আছে</div>
+
+  <div class="check ok" th:if="${result.sellerMatched}">✓ বিক্রেতার হস্তান্তরযোগ্য মালিকানা ব্যালেন্স আছে</div>
+  <div class="check danger" th:unless="${result.sellerMatched}">✕ বিক্রেতার মালিকানা ব্যালেন্স পাওয়া যায়নি</div>
+
+  <div class="check ok" th:unless="${result.deedMismatch}">✓ দলিলের তথ্য সামঞ্জস্যপূর্ণ</div>
+  <div class="check warn" th:if="${result.deedMismatch}">⚠ দলিলে অসামঞ্জস্য শনাক্ত হয়েছে</div>
+
+  <div class="check ok" th:unless="${result.mutationMismatch}">✓ নামজারির তথ্য সামঞ্জস্যপূর্ণ</div>
+  <div class="check warn" th:if="${result.mutationMismatch}">⚠ নামজারিতে অসামঞ্জস্য শনাক্ত হয়েছে</div>
+
+  <div class="check danger" th:if="${result.overSelling}">
+    ✕ অতিরিক্ত বিক্রয়ের ঝুঁকি শনাক্ত হয়েছে<br>
+    প্রস্তাবিত লেনদেন বিদ্যমান মালিকানার চেয়ে
+    <strong th:text="${#numbers.formatDecimal(result.excessArea,1,2)} + ' ডেসিমাল'"></strong> বেশি
+  </div>
+  <div class="check danger" th:if="${result.doubleSelling}">✕ সম্ভাব্য দ্বৈত বিক্রয় (ডাবল সেলিং) শনাক্ত হয়েছে</div>
+  <div class="check danger" th:if="${result.transactionConflict}">✕ চলমান / একই অংশে অপেক্ষমাণ লেনদেন শনাক্ত হয়েছে</div>
+
+  <h2>এই ফলাফল কেন এলো?</h2>
+  <div class="reason-list">
+    <div class="reason" th:each="reason : ${result.reasons}" th:text="${reason}"></div>
+  </div>
+
+  <h2>লেনদেনের সময়রেখা</h2>
+  <div class="timeline">
+    <p th:if="${#lists.isEmpty(result.history)}">এই সম্পত্তির কোনো আগের লেনদেন নেই।</p>
+    <div class="timeline-item" th:each="item : ${result.history}">
+      <strong th:text="${item.transactionDate}"></strong>
+      <span>
+        <span th:text="${item.sellerName}"></span> →
+        <span th:text="${item.buyerName}"></span> |
+        <span th:text="${item.transferredArea}"></span> ডেসিমাল |
+        <span th:text="${item.shareRef}"></span> |
+        <span th:text="${item.status == 'COMPLETED' ? 'সম্পন্ন' : (item.status == 'PENDING' ? 'অপেক্ষমাণ' : item.status)}"></span>
+      </span>
+    </div>
+  </div>
+
+  <div class="recommendation">
+    <h2>সুপারিশ</h2>
+    <p th:if="${result.riskLevel == 'HIGH'}">নিবন্ধনের আগে হাতে-কলমে (ম্যানুয়াল) যাচাই করার জোরালো পরামর্শ দেওয়া হচ্ছে।</p>
+    <p th:if="${result.riskLevel == 'MEDIUM'}">এগিয়ে যাওয়ার আগে শনাক্ত হওয়া রেকর্ডের অসামঞ্জস্যগুলো পর্যালোচনা করুন।</p>
+    <p th:if="${result.riskLevel == 'LOW'}">প্রোটোটাইপের নিয়ম অনুযায়ী কোনো বড় ঝুঁকির লক্ষণ পাওয়া যায়নি।</p>
+  </div>
+
+  <div th:if="${result.canComplete}" class="completion-box">
+    <h2>ডেমো লেনদেন সিমুলেশন</h2>
+    <p>এটি নিম্ন-ঝুঁকির ডেমো কেস, তাই আপনি লেনদেন সম্পন্ন হওয়ার সিমুলেশন চালাতে পারেন।</p>
+    <form th:action="@{/demo/complete}" method="post">
+      <input type="hidden" name="propertyId" th:value="${result.propertyId}">
+      <input type="hidden" name="sellerName" th:value="${result.sellerName}">
+      <input type="hidden" name="buyerName" th:value="${result.buyerName}">
+      <input type="hidden" name="proposedArea" th:value="${result.proposedArea}">
+      <input type="hidden" name="shareRef" th:value="${result.shareRef}">
+      <button class="button" type="submit">ডেমো লেনদেন সম্পন্ন করুন</button>
+    </form>
+    <small>এটি শুধু ল্যান্ডশিল্ড প্রোটোটাইপের অভ্যন্তরীণ খাতা হালনাগাদ করে। এটি আইনগত মালিকানা হস্তান্তর বা নামজারি নয়।</small>
+  </div>
+
+  <div class="notice small-notice"><strong>শুধুই ডামি তথ্য:</strong> এখানে দেখানো সব রেকর্ড কাল্পনিক; কোনো প্রকৃত নাগরিক বা সরকারি তথ্য ব্যবহার করা হয়নি।</div>
+</div>
+
+</div>
+</section>
+</body>
+</html>

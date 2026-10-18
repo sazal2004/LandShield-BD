@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>কর্মকর্তা লগইন | ল্যান্ডশিল্ড বিডি</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<section class="login-page">
+<div class="login-box">
+  <h1>কর্মকর্তা ডেমো লগইন</h1>
+  <p>সীমিত প্রবেশাধিকারের প্রোটোটাইপ পর্যালোচনা ড্যাশবোর্ড।</p>
+  <form th:action="@{/login}" method="post">
+    <label>ব্যবহারকারীর নাম</label>
+    <input type="text" name="username" required autofocus>
+    <label>পাসওয়ার্ড</label>
+    <input type="password" name="password" required>
+    <button type="submit" class="button">প্রবেশ করুন</button>
+  </form>
+  <p th:if="${param.error}" class="error-text">ব্যবহারকারীর নাম বা পাসওয়ার্ড ভুল।</p>
+  <div class="demo-card">
+    <strong>ডেমো লগইন তথ্য</strong>
+    <p>ব্যবহারকারীর নাম: officer</p>
+    <p>পাসওয়ার্ড: Demo@123</p>
+    <small>এগুলো আসল তথ্য নয় — শুধু প্রোটোটাইপের জন্য।</small>
+  </div>
+  <p><a th:href="@{/}">← জনসাধারণের সাইটে ফিরুন</a></p>
+</div>
+</section>
+</body>
+</html>

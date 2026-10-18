@@ -1,0 +1,36 @@
+# Render Blueprint: creates the web service + PostgreSQL database in one step
+services:
+  - type: web
+    name: landshield-bd
+    runtime: docker
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: ADMIN_PASSWORD
+        value: Demo@123        # demo officer password (shown on the login page)
+      - key: DB_HOST
+        fromDatabase:
+          name: landshield-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: landshield-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: landshield-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: landshield-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: landshield-db
+          property: password
+
+databases:
+  - name: landshield-db
+    plan: free
+    databaseName: landshield
+    user: landshield

@@ -1,0 +1,58 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Local data ###
+data/
+*.mv.db
+*.log
+.env
+# Build files
+target/
+
+# Editor files
+.vscode/
+.idea/
+
+# Local environment and secrets
+.env
+.env.*
+application-local.properties
+application-secret.properties
+
+# Local database files
+*.mv.db
+*.trace.db
+
+# Logs
+*.log

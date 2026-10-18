@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ডেমো লেনদেন | ল্যান্ডশিল্ড বিডি</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="navbar">
+  <div class="brand">
+    <img class="corner-logo" th:src="@{/images/gov-logo.png}" alt="" onerror="this.style.display='none'">
+    <div class="logo">LandShield BD</div>
+  </div>
+  <nav>
+    <a th:href="@{/}">হোম</a>
+    <a th:href="@{/verify}">আবার যাচাই</a>
+  </nav>
+  <div class="corner-right">
+    <img class="corner-logo" th:src="@{/images/diu-logo.png}" alt="Daffodil International University" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    <span class="corner-text" style="display:none">Daffodil International University</span>
+  </div>
+</header>
+<section class="page-section">
+<div class="result-box">
+  <div th:if="${error}" class="error-card">
+    <h2>লেনদেন সম্পন্ন করা যায়নি</h2>
+    <p th:text="${error}"></p>
+    <a th:href="@{/verify}" class="button">যাচাই পেজে ফিরুন</a>
+  </div>
+
+  <div th:if="${completion != null}">
+    <span class="eyebrow">ডেমো খাতা হালনাগাদ</span>
+    <h1>ডেমো লেনদেন সম্পন্ন হয়েছে</h1>
+    <p><strong th:text="${completion.sellerName}"></strong> → <strong th:text="${completion.buyerName}"></strong>
+       | <span th:text="${#numbers.formatDecimal(completion.transferredArea,1,2)}"></span> ডেসিমাল
+       | <span th:text="${completion.shareRef}"></span></p>
+    <div class="grid">
+      <div class="metric"><span>বিক্রেতার আগের ব্যালেন্স</span>
+        <strong th:text="${#numbers.formatDecimal(completion.sellerOldBalance,1,2)} + ' ডেসিমাল'"></strong></div>
+      <div class="metric"><span>বিক্রেতার নতুন ব্যালেন্স</span>
+        <strong th:text="${#numbers.formatDecimal(completion.sellerNewBalance,1,2)} + ' ডেসিমাল'"></strong></div>
+      <div class="metric"><span>ক্রেতার আগের ব্যালেন্স</span>
+        <strong th:text="${#numbers.formatDecimal(completion.buyerOldBalance,1,2)} + ' ডেসিমাল'"></strong></div>
+      <div class="metric"><span>ক্রেতার নতুন ব্যালেন্স</span>
+        <strong th:text="${#numbers.formatDecimal(completion.buyerNewBalance,1,2)} + ' ডেসিমাল'"></strong></div>
+    </div>
+    <div class="notice small-notice"><strong>গুরুত্বপূর্ণ:</strong> এই হালনাগাদ শুধু ল্যান্ডশিল্ডের ডেমো খাতায় সীমাবদ্ধ। এটি সরকারি নামজারি বা আইনগত মালিকানা নির্দেশ করে না।</div>
+    <a th:href="@{/verify}" class="button">আরেকটি যাচাই করুন</a>
+  </div>
+</div>
+</section>
+</body>
+</html>

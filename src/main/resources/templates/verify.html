@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>সম্পত্তি যাচাই | ল্যান্ডশিল্ড বিডি</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="navbar">
+  <div class="brand">
+    <img class="corner-logo" th:src="@{/images/gov-logo.png}" alt="" onerror="this.style.display='none'">
+    <div class="logo">LandShield BD</div>
+  </div>
+  <nav>
+    <a th:href="@{/}">হোম</a>
+    <a th:href="@{/verify}">সম্পত্তি যাচাই</a>
+    <a th:href="@{/about}">আমাদের সম্পর্কে</a>
+  </nav>
+  <div class="corner-right">
+    <img class="corner-logo" th:src="@{/images/diu-logo.png}" alt="Daffodil International University" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    <span class="corner-text" style="display:none">Daffodil International University</span>
+  </div>
+</header>
+<section class="page-section">
+<div class="form-box">
+  <span class="eyebrow">ভূমি লেনদেন যাচাই</span>
+  <h1>সম্পত্তি যাচাই করুন</h1>
+  <p>সম্পত্তি ও প্রস্তাবিত লেনদেনের তথ্য দিন। (নাম ও স্থানের নাম ইংরেজিতে, যেমন নিচের উদাহরণে দেওয়া আছে।)</p>
+  <form th:action="@{/verify-result}" method="post">
+    <label>জেলা</label>
+    <input name="district" required placeholder="Dhaka">
+    <label>উপজেলা</label>
+    <input name="upazila" required placeholder="Savar">
+    <label>মৌজা</label>
+    <input name="mouza" required placeholder="Demo Mouza A">
+    <label>খতিয়ান নম্বর</label>
+    <input name="khatianNo" required placeholder="KH-101">
+    <label>দাগ নম্বর</label>
+    <input name="plotNo" required placeholder="PL-501">
+    <label>বিক্রেতার নাম</label>
+    <input name="sellerName" required placeholder="Rahim Ahmed">
+    <label>ক্রেতার নাম</label>
+    <input name="buyerName" required placeholder="Ayesha Rahman">
+    <label>ডেমো ভূমি-অংশ রেফারেন্স</label>
+    <input name="shareRef" required placeholder="SEG-C">
+    <label>প্রস্তাবিত হস্তান্তরের পরিমাণ (ডেসিমাল)</label>
+    <input type="number" name="proposedArea" min="0.01" step="0.01" required placeholder="7">
+    <button class="button" type="submit">যাচাই শুরু করুন</button>
+  </form>
+  <div class="demo-card">
+    <h3>প্রধান ডেমো পরিস্থিতি</h3>
+    <p>জেলা: Dhaka</p><p>উপজেলা: Savar</p><p>মৌজা: Demo Mouza A</p>
+    <p>খতিয়ান: KH-101</p><p>দাগ: PL-501</p>
+    <p>বিক্রেতা: Rahim Ahmed</p><p>ক্রেতা: Ayesha Rahman</p>
+    <p>অংশ রেফারেন্স: SEG-C</p><p>প্রস্তাবিত পরিমাণ: 7</p>
+    <strong>প্রত্যাশিত ফল: উচ্চ ঝুঁকি — অতিরিক্ত বিক্রয়</strong>
+  </div>
+  <div class="notice small-notice"><strong>শুধুই ডামি তথ্য:</strong> এই প্রোটোটাইপের সব রেকর্ড কাল্পনিক।</div>
+</div>
+</section>
+</body>
+</html>
